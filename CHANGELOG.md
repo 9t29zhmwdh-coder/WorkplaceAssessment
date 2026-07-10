@@ -6,6 +6,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ---
 
+## [1.0.1] - 2026-07-10
+
+### Fixed
+
+- Removed em-dashes and en-dashes from README.md/README.de.md, replaced with colons, commas or plain hyphens
+
 ## [1.0.0] - 2026-07-10
 
 ### Added

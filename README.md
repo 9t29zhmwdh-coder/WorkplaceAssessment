@@ -12,7 +12,7 @@ WorkplaceAssessment checks a Windows machine's reboot state, uptime, storage, lo
 
 [![CI](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions) ![Platform](https://img.shields.io/badge/Platform-Windows_10_%7C_11-lightgrey) ![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-5391FE?logo=powershell&logoColor=white) ![Dependencies](https://img.shields.io/badge/Dependencies-none-brightgreen) ![License](https://img.shields.io/badge/License-MIT-blue)
 
-> **How it runs:** WorkplaceAssessment is a single PowerShell script, not an installed app or background service. Double-click `Start-Assessment.cmd`, it scans once, writes a report, and exits — nothing stays resident.
+> **How it runs:** WorkplaceAssessment is a single PowerShell script, not an installed app or background service. Double-click `Start-Assessment.cmd`, it scans once, writes a report, and exits, nothing stays resident.
 
 **In practice:** you run the launcher, optionally confirm a UAC prompt (needed for the TPM check to return real data), and get a report showing an overall score out of 100 with a breakdown across four categories. Every finding lists its evidence, the risk it represents, and a concrete recommendation; click a row to see the raw technical details behind it.
 
@@ -49,9 +49,9 @@ WorkplaceAssessment checks a Windows machine's reboot state, uptime, storage, lo
 
 ## Quick Start
 
-**Option A — Installer:** download `WorkplaceAssessment-Setup-*.exe` from [Releases](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/releases), run it, and launch from the Start Menu. Installs to Program Files with a proper uninstaller entry in "Apps & Features".
+**Option A: Installer** download `WorkplaceAssessment-Setup-*.exe` from [Releases](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/releases), run it, and launch from the Start Menu. Installs to Program Files with a proper uninstaller entry in "Apps & Features".
 
-**Option B — Portable, no install:**
+**Option B: Portable, no install**
 
 ```powershell
 git clone https://github.com/9t29zhmwdh-coder/WorkplaceAssessment
@@ -65,13 +65,13 @@ Or run the script directly without the launcher:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Invoke-WorkplaceAssessment.ps1
 ```
 
-Both options run the exact same script; the installer just adds a Start Menu/Desktop shortcut and a standard uninstall entry on top of it — pick whichever fits how you distribute the tool (e.g. installer for a managed fleet, portable for a USB-stick toolkit).
+Both options run the exact same script; the installer just adds a Start Menu/Desktop shortcut and a standard uninstall entry on top of it: pick whichever fits how you distribute the tool (e.g. installer for a managed fleet, portable for a USB-stick toolkit).
 
 ---
 
 ## Elevation
 
-`Start-Assessment.cmd` checks whether it's already running elevated and, if not, requests UAC elevation automatically before scanning. This is only needed for the TPM 2.0 check — `Win32_Tpm` denies non-elevated CIM clients on Windows 11 in practice. Every other check works fully without admin rights; if you skip elevation (e.g. by running the `.ps1` directly), the TPM check simply reports "not scored" instead of a false result.
+`Start-Assessment.cmd` checks whether it's already running elevated and, if not, requests UAC elevation automatically before scanning. This is only needed for the TPM 2.0 check: `Win32_Tpm` denies non-elevated CIM clients on Windows 11 in practice. Every other check works fully without admin rights; if you skip elevation (e.g. by running the `.ps1` directly), the TPM check simply reports "not scored" instead of a false result.
 
 ---
 
@@ -80,7 +80,7 @@ Both options run the exact same script; the installer just adds a Start Menu/Des
 - **Portable use (Option B):** there is nothing to uninstall. Delete the folder. No registry entries, no scheduled tasks, no background services are created.
 - **Installer use (Option A):** uninstall via Windows Settings → Apps, or the Start Menu shortcut created alongside the app. This removes the installed files and the `output/` folder under the install directory.
 
-Neither install path creates scheduled tasks or background services — the tool only runs while you actively trigger a scan.
+Neither install path creates scheduled tasks or background services: the tool only runs while you actively trigger a scan.
 
 ---
 

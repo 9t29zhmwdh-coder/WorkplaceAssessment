@@ -12,9 +12,9 @@ WorkplaceAssessment prüft Neustartstatus, Laufzeit, Speicherplatz, lokale Admin
 
 [![CI](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions) ![Platform](https://img.shields.io/badge/Platform-Windows_10_%7C_11-lightgrey) ![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-5391FE?logo=powershell&logoColor=white) ![Dependencies](https://img.shields.io/badge/Dependencies-none-brightgreen) ![License](https://img.shields.io/badge/License-MIT-blue)
 
-> **So läuft es:** WorkplaceAssessment ist ein einzelnes PowerShell-Skript, keine installierte App und kein Hintergrunddienst. Doppelklick auf `Start-Assessment.cmd` genügt: einmal scannen, Report schreiben, fertig — nichts bleibt resident.
+> **So läuft es:** WorkplaceAssessment ist ein einzelnes PowerShell-Skript, keine installierte App und kein Hintergrunddienst. Doppelklick auf `Start-Assessment.cmd` genügt: einmal scannen, Report schreiben, fertig, nichts bleibt resident.
 
-**In der Praxis:** Du startest den Launcher, bestätigst optional einen UAC-Prompt (nötig, damit der TPM-Check ein echtes Ergebnis liefert), und erhältst einen Report mit Gesamtscore (0–100) und Aufschlüsselung nach vier Kategorien. Jeder Befund zeigt Evidenz, Risiko und eine konkrete Empfehlung; ein Klick auf eine Zeile öffnet die technischen Rohdaten dahinter.
+**In der Praxis:** Du startest den Launcher, bestätigst optional einen UAC-Prompt (nötig, damit der TPM-Check ein echtes Ergebnis liefert), und erhältst einen Report mit Gesamtscore (0-100) und Aufschlüsselung nach vier Kategorien. Jeder Befund zeigt Evidenz, Risiko und eine konkrete Empfehlung; ein Klick auf eine Zeile öffnet die technischen Rohdaten dahinter.
 
 ---
 
@@ -49,9 +49,9 @@ WorkplaceAssessment prüft Neustartstatus, Laufzeit, Speicherplatz, lokale Admin
 
 ## Schnellstart
 
-**Option A — Installer:** `WorkplaceAssessment-Setup-*.exe` von den [Releases](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/releases) herunterladen, ausführen, danach über das Startmenü starten. Installiert nach Program Files mit sauberem Uninstaller-Eintrag unter "Apps & Features".
+**Option A: Installer** `WorkplaceAssessment-Setup-*.exe` von den [Releases](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/releases) herunterladen, ausführen, danach über das Startmenü starten. Installiert nach Program Files mit sauberem Uninstaller-Eintrag unter "Apps & Features".
 
-**Option B — Portabel, ohne Installation:**
+**Option B: Portabel, ohne Installation**
 
 ```powershell
 git clone https://github.com/9t29zhmwdh-coder/WorkplaceAssessment
@@ -65,13 +65,13 @@ Oder direkt ohne Launcher:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Invoke-WorkplaceAssessment.ps1
 ```
 
-Beide Optionen führen exakt dasselbe Skript aus; der Installer ergänzt lediglich eine Startmenü-/Desktop-Verknüpfung und einen regulären Deinstallations-Eintrag — wähle, was zu deiner Verteilung passt (Installer für eine verwaltete Flotte, portabel für ein USB-Stick-Toolkit).
+Beide Optionen führen exakt dasselbe Skript aus; der Installer ergänzt lediglich eine Startmenü-/Desktop-Verknüpfung und einen regulären Deinstallations-Eintrag: wähle, was zu deiner Verteilung passt (Installer für eine verwaltete Flotte, portabel für ein USB-Stick-Toolkit).
 
 ---
 
 ## Elevation
 
-`Start-Assessment.cmd` prüft, ob es bereits erhöht läuft, und fordert andernfalls automatisch UAC-Elevation an, bevor der Scan startet. Das ist ausschliesslich für den TPM-2.0-Check nötig — `Win32_Tpm` verweigert nicht-elevierten CIM-Clients unter Windows 11 in der Praxis den Zugriff. Alle anderen Checks funktionieren vollständig ohne Adminrechte; ohne Elevation (z. B. bei direktem Aufruf der `.ps1`) meldet der TPM-Check schlicht „Nicht bewertet" statt eines falschen Ergebnisses.
+`Start-Assessment.cmd` prüft, ob es bereits erhöht läuft, und fordert andernfalls automatisch UAC-Elevation an, bevor der Scan startet. Das ist ausschliesslich für den TPM-2.0-Check nötig: `Win32_Tpm` verweigert nicht-elevierten CIM-Clients unter Windows 11 in der Praxis den Zugriff. Alle anderen Checks funktionieren vollständig ohne Adminrechte; ohne Elevation (z. B. bei direktem Aufruf der `.ps1`) meldet der TPM-Check schlicht „Nicht bewertet" statt eines falschen Ergebnisses.
 
 ---
 
@@ -80,7 +80,7 @@ Beide Optionen führen exakt dasselbe Skript aus; der Installer ergänzt ledigli
 - **Portable Nutzung (Option B):** Es gibt nichts zu deinstallieren. Ordner löschen genügt. Es werden keine Registry-Einträge, geplanten Aufgaben oder Hintergrunddienste angelegt.
 - **Installer-Nutzung (Option A):** Deinstallation über Windows-Einstellungen → Apps oder die Startmenü-Verknüpfung. Entfernt die installierten Dateien sowie den `output/`-Ordner im Installationsverzeichnis.
 
-Keine der beiden Varianten legt geplante Aufgaben oder Hintergrunddienste an — das Tool läuft nur, wenn du aktiv einen Scan auslöst.
+Keine der beiden Varianten legt geplante Aufgaben oder Hintergrunddienste an: das Tool läuft nur, wenn du aktiv einen Scan auslöst.
 
 ---
 
