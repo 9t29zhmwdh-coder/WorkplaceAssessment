@@ -9,6 +9,8 @@ WorkplaceAssessment/
 ├── scripts/
 │   └── Invoke-WorkplaceAssessment.ps1   # entire application
 ├── Start-Assessment.cmd                 # UAC-elevating launcher
+├── installer/
+│   └── WorkplaceAssessment.iss          # Inno Setup script, packages the two files above
 └── output/                              # generated reports (gitignored, local only)
 ```
 
@@ -72,4 +74,10 @@ The script does not require administrator rights to run. Most checks work fine u
 
 ## External Dependencies
 
-None. Only built-in Windows PowerShell cmdlets and CIM/WMI classes. No modules to install, no network calls, no telemetry.
+None at runtime. Only built-in Windows PowerShell cmdlets and CIM/WMI classes. No modules to install, no network calls, no telemetry.
+
+## Installer Build
+
+`installer/WorkplaceAssessment.iss` is an [Inno Setup](https://jrsoftware.org/isinfo.php) script that packages `scripts/Invoke-WorkplaceAssessment.ps1`, `Start-Assessment.cmd`, and the docs into a Program Files install with a Start Menu shortcut and a standard uninstaller entry. It changes nothing about how the application itself runs — it's purely a distribution wrapper around the same two files used in the portable case.
+
+`.github/workflows/release.yml` compiles this script on `windows-latest` (via Chocolatey's `innosetup` package) whenever a `v*.*.*` tag is pushed, and attaches the resulting `WorkplaceAssessment-Setup-<version>.exe` to a GitHub Release. It can also be triggered manually (`workflow_dispatch`) to produce a test build without cutting a release.

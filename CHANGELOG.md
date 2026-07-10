@@ -14,6 +14,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 - Ten checks across four categories (security, health, storage, management): reboot-pending, uptime, battery health, system-drive free space, local administrators, remote-access tools, Windows edition & license activation, autostart entries, Secure Boot, TPM 2.0
 - Self-contained HTML report with embedded JSON, filterable/searchable findings table, and per-category score breakdown
 - `Start-Assessment.cmd` launcher with automatic UAC elevation, so the TPM check produces real data by default
+- Windows installer (`installer/WorkplaceAssessment.iss`, Inno Setup) as an alternative to the portable script, built and published to GitHub Releases by `.github/workflows/release.yml` on every version tag
 
 ### Fixed
 

@@ -1,24 +1,29 @@
 # Getting Started with WorkplaceAssessment
 
-This guide walks you through running WorkplaceAssessment from scratch, even if you have never used PowerShell or a terminal before. WorkplaceAssessment is a Windows-only script — there is nothing to compile and nothing to install.
+This guide walks you through running WorkplaceAssessment from scratch, even if you have never used PowerShell or a terminal before. WorkplaceAssessment is a Windows-only script; there's nothing to compile, and installing it (Option A below) is optional.
 
 ---
 
 ## 1. Get the code
 
-**Easiest way (no git required):**
+**Option A — Installer (recommended if you just want to run it):**
+1. Go to [Releases](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/releases) and download the latest `WorkplaceAssessment-Setup-*.exe`
+2. Run it and click through the setup wizard
+3. Launch **WorkplaceAssessment** from the Start Menu — skip straight to [step 3](#3-what-you-should-see), the installer already sets everything up
+
+**Option B — Portable ZIP (no git required):**
 1. Go to the [WorkplaceAssessment GitHub page](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment)
 2. Click the green **"Code"** button → **"Download ZIP"**
 3. Extract the ZIP file somewhere convenient, e.g. `C:\Tools\WorkplaceAssessment`
 
-**Alternative (if you have git):**
+**Option C — git clone:**
 ```powershell
 git clone https://github.com/9t29zhmwdh-coder/WorkplaceAssessment.git
 ```
 
-## 2. Run it
+## 2. Run it (Options B/C)
 
-Open the extracted folder in File Explorer and double-click **`Start-Assessment.cmd`**.
+Open the extracted/cloned folder in File Explorer and double-click **`Start-Assessment.cmd`**.
 
 A UAC prompt ("Do you want to allow this app to make changes to your device?") appears — click **Yes**. This is required for the TPM 2.0 check to produce a real result; without it, that one check simply reports "not scored" instead of failing.
 

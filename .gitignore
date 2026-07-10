@@ -6,3 +6,6 @@ output/
 .vscode/
 Thumbs.db
 desktop.ini
+
+# Installer build output (built by .github/workflows/release.yml, not checked in)
+dist/
