@@ -1,0 +1,8 @@
+# Generated assessment reports contain real hostnames, usernames, local admin
+# lists and license fragments from scanned machines - never commit these.
+output/
+
+*.log
+.vscode/
+Thumbs.db
+desktop.ini
