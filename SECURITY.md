@@ -21,7 +21,7 @@ Response within 7 days.
 - No external network calls of any kind — the script never sends data anywhere, not even to `localhost`
 - No modules or dependencies are downloaded at runtime; everything ships in one `.ps1` file
 - No admin rights required for the baseline scan; the two checks that need elevation (TPM, battery-wear detail) degrade to "not scored" instead of failing or producing a false result when run unelevated
-- `Start-Assessment-v14.cmd` requests UAC elevation via the standard Windows consent prompt (`Start-Process -Verb RunAs`) — it never silently escalates privileges
+- `Start-Assessment.cmd` requests UAC elevation via the standard Windows consent prompt (`Start-Process -Verb RunAs`) — it never silently escalates privileges
 - Read-only by design: every check only queries system state (registry reads, WMI/CIM queries, cmdlets); nothing is modified on the scanned machine
 
 ## Data Sensitivity

@@ -9,7 +9,7 @@
 - Battery health check (design vs. full-charge capacity wear)
 - Self-contained HTML report (embedded JSON, filterable/searchable table, donut charts) plus raw JSON export
 - Zero external dependencies, zero network calls, zero telemetry
-- UAC-elevating launcher (`Start-Assessment-v14.cmd`) so the TPM check gets real data by default
+- UAC-elevating launcher (`Start-Assessment.cmd`) so the TPM check gets real data by default
 
 ## Known Limitations
 
