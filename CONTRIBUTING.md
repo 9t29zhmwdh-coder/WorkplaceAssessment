@@ -14,16 +14,16 @@ There is nothing to install and no build step — the script runs as-is.
 1. Fork the repository
 2. `git clone https://github.com/YOUR_USERNAME/WorkplaceAssessment`
 3. `cd WorkplaceAssessment`
-4. `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Invoke-WorkplaceAssessmentV14.ps1 -NoOpen`
+4. `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Invoke-WorkplaceAssessment.ps1 -NoOpen`
 
 ## Development Workflow
 
 1. Create a feature branch: `git checkout -b feature/xyz`
-2. Make your changes to `scripts/Invoke-WorkplaceAssessmentV14.ps1`
+2. Make your changes to `scripts/Invoke-WorkplaceAssessment.ps1`
 3. Validate syntax:
    ```powershell
    $errors = $null; $tokens = $null
-   [System.Management.Automation.Language.Parser]::ParseFile('scripts\Invoke-WorkplaceAssessmentV14.ps1', [ref]$tokens, [ref]$errors) | Out-Null
+   [System.Management.Automation.Language.Parser]::ParseFile('scripts\Invoke-WorkplaceAssessment.ps1', [ref]$tokens, [ref]$errors) | Out-Null
    $errors
    ```
 4. Run the script and confirm the JSON/HTML report generates correctly, including your change

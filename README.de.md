@@ -12,7 +12,7 @@ WorkplaceAssessment prüft Neustartstatus, Laufzeit, Speicherplatz, lokale Admin
 
 [![CI](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions) ![Platform](https://img.shields.io/badge/Platform-Windows_10_%7C_11-lightgrey) ![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-5391FE?logo=powershell&logoColor=white) ![Dependencies](https://img.shields.io/badge/Dependencies-none-brightgreen) ![License](https://img.shields.io/badge/License-MIT-blue)
 
-> **So läuft es:** WorkplaceAssessment ist ein einzelnes PowerShell-Skript, keine installierte App und kein Hintergrunddienst. Doppelklick auf `Start-Assessment-v14.cmd` genügt: einmal scannen, Report schreiben, fertig — nichts bleibt resident.
+> **So läuft es:** WorkplaceAssessment ist ein einzelnes PowerShell-Skript, keine installierte App und kein Hintergrunddienst. Doppelklick auf `Start-Assessment.cmd` genügt: einmal scannen, Report schreiben, fertig — nichts bleibt resident.
 
 **In der Praxis:** Du startest den Launcher, bestätigst optional einen UAC-Prompt (nötig, damit der TPM-Check ein echtes Ergebnis liefert), und erhältst einen Report mit Gesamtscore (0–100) und Aufschlüsselung nach vier Kategorien. Jeder Befund zeigt Evidenz, Risiko und eine konkrete Empfehlung; ein Klick auf eine Zeile öffnet die technischen Rohdaten dahinter.
 
@@ -52,20 +52,20 @@ WorkplaceAssessment prüft Neustartstatus, Laufzeit, Speicherplatz, lokale Admin
 ```powershell
 git clone https://github.com/9t29zhmwdh-coder/WorkplaceAssessment
 cd WorkplaceAssessment
-.\Start-Assessment-v14.cmd
+.\Start-Assessment.cmd
 ```
 
 Oder direkt ohne Launcher:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Invoke-WorkplaceAssessmentV14.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Invoke-WorkplaceAssessment.ps1
 ```
 
 ---
 
 ## Elevation
 
-`Start-Assessment-v14.cmd` prüft, ob es bereits erhöht läuft, und fordert andernfalls automatisch UAC-Elevation an, bevor der Scan startet. Das ist ausschliesslich für den TPM-2.0-Check nötig — `Win32_Tpm` verweigert nicht-elevierten CIM-Clients unter Windows 11 in der Praxis den Zugriff. Alle anderen Checks funktionieren vollständig ohne Adminrechte; ohne Elevation (z. B. bei direktem Aufruf der `.ps1`) meldet der TPM-Check schlicht „Nicht bewertet" statt eines falschen Ergebnisses.
+`Start-Assessment.cmd` prüft, ob es bereits erhöht läuft, und fordert andernfalls automatisch UAC-Elevation an, bevor der Scan startet. Das ist ausschliesslich für den TPM-2.0-Check nötig — `Win32_Tpm` verweigert nicht-elevierten CIM-Clients unter Windows 11 in der Praxis den Zugriff. Alle anderen Checks funktionieren vollständig ohne Adminrechte; ohne Elevation (z. B. bei direktem Aufruf der `.ps1`) meldet der TPM-Check schlicht „Nicht bewertet" statt eines falschen Ergebnisses.
 
 ---
 
@@ -85,9 +85,9 @@ WorkplaceAssessment verarbeitet alles **lokal auf dem gescannten Gerät**. Es we
 
 ```
 WorkplaceAssessment/
-├── scripts/Invoke-WorkplaceAssessmentV14.ps1   # gesamte Anwendung, eine Datei
-├── Start-Assessment-v14.cmd                    # UAC-elevierender Launcher
-└── output/                                     # generierte JSON-/HTML-Reports (nur lokal)
+├── scripts/Invoke-WorkplaceAssessment.ps1   # gesamte Anwendung, eine Datei
+├── Start-Assessment.cmd                     # UAC-elevierender Launcher
+└── output/                                  # generierte JSON-/HTML-Reports (nur lokal)
 ```
 
 Siehe [ARCHITECTURE.md](ARCHITECTURE.md) für das `Finding`-Pattern, das jeder Check nutzt, sowie die Report-Erzeugungs-Pipeline.

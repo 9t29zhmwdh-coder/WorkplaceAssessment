@@ -18,7 +18,7 @@ git clone https://github.com/9t29zhmwdh-coder/WorkplaceAssessment.git
 
 ## 2. Run it
 
-Open the extracted folder in File Explorer and double-click **`Start-Assessment-v14.cmd`**.
+Open the extracted folder in File Explorer and double-click **`Start-Assessment.cmd`**.
 
 A UAC prompt ("Do you want to allow this app to make changes to your device?") appears — click **Yes**. This is required for the TPM 2.0 check to produce a real result; without it, that one check simply reports "not scored" instead of failing.
 
@@ -31,7 +31,7 @@ A console window flashes briefly while the checks run (a few seconds), then your
 If you don't want the elevation prompt (e.g. scripted/unattended use), run the `.ps1` directly instead of the `.cmd`:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Invoke-WorkplaceAssessmentV14.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Invoke-WorkplaceAssessment.ps1
 ```
 
 All checks except TPM (and, on some devices, battery-wear detail) still work fully unelevated — see [ARCHITECTURE.md](ARCHITECTURE.md#elevation-model).
@@ -49,7 +49,7 @@ All checks except TPM (and, on some devices, battery-wear detail) still work ful
 
 | Issue | Cause | Fix |
 |---|---|---|
-| PowerShell blocks the script with an execution policy error | Windows execution policy defaults to "Restricted" | Both `Start-Assessment-v14.cmd` and the documented direct command already pass `-ExecutionPolicy Bypass`; if you're invoking PowerShell some other way, add that flag yourself |
-| UAC prompt doesn't appear / TPM check still says "not scored" | Prompt was dismissed, or you ran the `.ps1` directly instead of the `.cmd` | Re-run `Start-Assessment-v14.cmd` and accept the UAC prompt |
+| PowerShell blocks the script with an execution policy error | Windows execution policy defaults to "Restricted" | Both `Start-Assessment.cmd` and the documented direct command already pass `-ExecutionPolicy Bypass`; if you're invoking PowerShell some other way, add that flag yourself |
+| UAC prompt doesn't appear / TPM check still says "not scored" | Prompt was dismissed, or you ran the `.ps1` directly instead of the `.cmd` | Re-run `Start-Assessment.cmd` and accept the UAC prompt |
 | Report shows "Nicht bewertet" for battery wear | Some device drivers (observed on certain Surface models) don't expose design-capacity data via WMI, independent of admin rights | Current charge is still shown; wear percentage isn't available on that specific device |
 | Browser doesn't open automatically | `-NoOpen` was passed, or no default browser is configured | Open the generated `.html` file from `output/` manually |

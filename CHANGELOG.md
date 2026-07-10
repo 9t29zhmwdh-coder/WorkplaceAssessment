@@ -10,10 +10,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ### Added
 
-- Initial public release of the assessment engine (internally versioned "V14")
+- Initial public release of the assessment engine (previously an internal iteration informally called "V14")
 - Ten checks across four categories (security, health, storage, management): reboot-pending, uptime, battery health, system-drive free space, local administrators, remote-access tools, Windows edition & license activation, autostart entries, Secure Boot, TPM 2.0
 - Self-contained HTML report with embedded JSON, filterable/searchable findings table, and per-category score breakdown
-- `Start-Assessment-v14.cmd` launcher with automatic UAC elevation, so the TPM check produces real data by default
+- `Start-Assessment.cmd` launcher with automatic UAC elevation, so the TPM check produces real data by default
 
 ### Fixed
 

@@ -2,14 +2,14 @@
 
 ## Overview
 
-WorkplaceAssessment is a single, self-contained PowerShell script. There is no build step, no external module dependency, and no installer — `scripts/Invoke-WorkplaceAssessmentV14.ps1` is the entire application. It collects device signals via built-in Windows cmdlets and WMI/CIM classes, scores them, and writes a JSON report plus a self-rendering HTML report with an embedded JavaScript viewer. Nothing leaves the machine.
+WorkplaceAssessment is a single, self-contained PowerShell script. There is no build step, no external module dependency, and no installer — `scripts/Invoke-WorkplaceAssessment.ps1` is the entire application. It collects device signals via built-in Windows cmdlets and WMI/CIM classes, scores them, and writes a JSON report plus a self-rendering HTML report with an embedded JavaScript viewer. Nothing leaves the machine.
 
 ```
 WorkplaceAssessment/
 ├── scripts/
-│   └── Invoke-WorkplaceAssessmentV14.ps1   # entire application
-├── Start-Assessment-v14.cmd                # UAC-elevating launcher
-└── output/                                 # generated reports (gitignored, local only)
+│   └── Invoke-WorkplaceAssessment.ps1   # entire application
+├── Start-Assessment.cmd                 # UAC-elevating launcher
+└── output/                              # generated reports (gitignored, local only)
 ```
 
 ## Core Pattern: `Finding`
@@ -68,7 +68,7 @@ The script does not require administrator rights to run. Most checks work fine u
 - **TPM 2.0**: `Win32_Tpm` denies access to a non-elevated CIM client on Windows 11 in practice (confirmed directly, not just per documentation) — falls back to `info`/not scored.
 - **Battery wear**: depends on `root\wmi` `BatteryStaticData`, which some device drivers (observed on a Surface device) don't populate at all, independent of elevation — falls back to `info`/not scored, current charge is still shown.
 
-`Start-Assessment-v14.cmd` requests UAC elevation automatically (`net session` check + self-relaunch via `Start-Process -Verb RunAs`) so the TPM check produces a real result in the common case. Running the `.ps1` directly, without the `.cmd` wrapper, skips elevation and TPM will report "not scored".
+`Start-Assessment.cmd` requests UAC elevation automatically (`net session` check + self-relaunch via `Start-Process -Verb RunAs`) so the TPM check produces a real result in the common case. Running the `.ps1` directly, without the `.cmd` wrapper, skips elevation and TPM will report "not scored".
 
 ## External Dependencies
 

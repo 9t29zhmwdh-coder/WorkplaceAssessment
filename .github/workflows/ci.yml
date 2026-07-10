@@ -18,7 +18,7 @@ jobs:
         run: |
           $parseErrors = $null
           $tokens = $null
-          [System.Management.Automation.Language.Parser]::ParseFile("scripts/Invoke-WorkplaceAssessmentV14.ps1", [ref]$tokens, [ref]$parseErrors) | Out-Null
+          [System.Management.Automation.Language.Parser]::ParseFile("scripts/Invoke-WorkplaceAssessment.ps1", [ref]$tokens, [ref]$parseErrors) | Out-Null
           if ($parseErrors.Count -gt 0) {
             $parseErrors | ForEach-Object { Write-Error $_.Message }
             exit 1
@@ -31,7 +31,7 @@ jobs:
       - name: Run PSScriptAnalyzer
         shell: pwsh
         run: |
-          $results = Invoke-ScriptAnalyzer -Path scripts/Invoke-WorkplaceAssessmentV14.ps1 -Severity Error
+          $results = Invoke-ScriptAnalyzer -Path scripts/Invoke-WorkplaceAssessment.ps1 -Severity Error
           if ($results) {
             $results | Format-Table -AutoSize
             exit 1
@@ -40,7 +40,7 @@ jobs:
       - name: Smoke test (dry run)
         shell: pwsh
         run: |
-          .\scripts\Invoke-WorkplaceAssessmentV14.ps1 -NoOpen
+          .\scripts\Invoke-WorkplaceAssessment.ps1 -NoOpen
           $report = Get-ChildItem -Path output -Filter *.json -ErrorAction Stop | Select-Object -First 1
           if (-not $report) { throw "No JSON report was generated" }
           $json = Get-Content $report.FullName -Raw | ConvertFrom-Json
