@@ -10,6 +10,7 @@
 - Self-contained HTML report (embedded JSON, filterable/searchable table, donut charts) plus raw JSON export
 - Zero external dependencies, zero network calls, zero telemetry
 - UAC-elevating launcher (`Start-Assessment.cmd`) so the TPM check gets real data by default
+- Windows installer (`installer/WorkplaceAssessment.iss`, built via `.github/workflows/release.yml`) alongside the portable script, for managed-fleet distribution with a proper Start Menu entry and uninstaller
 
 ## Known Limitations
 

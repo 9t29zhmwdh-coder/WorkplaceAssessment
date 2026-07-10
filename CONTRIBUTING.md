@@ -6,8 +6,9 @@
 
 - Windows 10 or 11
 - PowerShell 5.1+ (built into Windows) or PowerShell 7+
+- [Inno Setup 6](https://jrsoftware.org/isdl.php) — only needed if you're changing `installer/WorkplaceAssessment.iss`; not required for script changes
 
-There is nothing to install and no build step — the script runs as-is.
+There is nothing to install and no build step for the script itself — it runs as-is.
 
 ### Setup
 
@@ -29,6 +30,16 @@ There is nothing to install and no build step — the script runs as-is.
 4. Run the script and confirm the JSON/HTML report generates correctly, including your change
 5. Commit: `git commit -m "[feat] description"`
 6. Push and open a Pull Request
+
+## Changing the Installer
+
+`installer/WorkplaceAssessment.iss` is only compiled by CI (`.github/workflows/release.yml`) on a version tag push or via manual `workflow_dispatch` — there's no need to have Inno Setup installed unless you're editing that file directly. To test a change locally:
+
+```powershell
+iscc /DMyAppVersion=0.0.0-test installer\WorkplaceAssessment.iss
+```
+
+This produces `dist\WorkplaceAssessment-Setup-0.0.0-test.exe`. Run it in a VM or with a throwaway user profile before relying on it, since it installs to Program Files and creates real Start Menu/registry entries.
 
 ## Code Style
 

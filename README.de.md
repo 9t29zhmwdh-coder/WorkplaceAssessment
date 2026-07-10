@@ -49,6 +49,10 @@ WorkplaceAssessment prüft Neustartstatus, Laufzeit, Speicherplatz, lokale Admin
 
 ## Schnellstart
 
+**Option A — Installer:** `WorkplaceAssessment-Setup-*.exe` von den [Releases](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/releases) herunterladen, ausführen, danach über das Startmenü starten. Installiert nach Program Files mit sauberem Uninstaller-Eintrag unter "Apps & Features".
+
+**Option B — Portabel, ohne Installation:**
+
 ```powershell
 git clone https://github.com/9t29zhmwdh-coder/WorkplaceAssessment
 cd WorkplaceAssessment
@@ -61,6 +65,8 @@ Oder direkt ohne Launcher:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Invoke-WorkplaceAssessment.ps1
 ```
 
+Beide Optionen führen exakt dasselbe Skript aus; der Installer ergänzt lediglich eine Startmenü-/Desktop-Verknüpfung und einen regulären Deinstallations-Eintrag — wähle, was zu deiner Verteilung passt (Installer für eine verwaltete Flotte, portabel für ein USB-Stick-Toolkit).
+
 ---
 
 ## Elevation
@@ -71,7 +77,10 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Invoke-Workpla
 
 ## Deinstallation / Aufräumen
 
-Es gibt nichts zu deinstallieren. Ordner löschen genügt. Es werden keine Registry-Einträge, geplanten Aufgaben oder Hintergrunddienste angelegt. Generierte Reports liegen in `output/` neben dem Skript — bei Bedarf ebenfalls löschen, um den Scan-Verlauf zu entfernen.
+- **Portable Nutzung (Option B):** Es gibt nichts zu deinstallieren. Ordner löschen genügt. Es werden keine Registry-Einträge, geplanten Aufgaben oder Hintergrunddienste angelegt.
+- **Installer-Nutzung (Option A):** Deinstallation über Windows-Einstellungen → Apps oder die Startmenü-Verknüpfung. Entfernt die installierten Dateien sowie den `output/`-Ordner im Installationsverzeichnis.
+
+Keine der beiden Varianten legt geplante Aufgaben oder Hintergrunddienste an — das Tool läuft nur, wenn du aktiv einen Scan auslöst.
 
 ---
 

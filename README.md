@@ -49,6 +49,10 @@ WorkplaceAssessment checks a Windows machine's reboot state, uptime, storage, lo
 
 ## Quick Start
 
+**Option A — Installer:** download `WorkplaceAssessment-Setup-*.exe` from [Releases](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/releases), run it, and launch from the Start Menu. Installs to Program Files with a proper uninstaller entry in "Apps & Features".
+
+**Option B — Portable, no install:**
+
 ```powershell
 git clone https://github.com/9t29zhmwdh-coder/WorkplaceAssessment
 cd WorkplaceAssessment
@@ -61,6 +65,8 @@ Or run the script directly without the launcher:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Invoke-WorkplaceAssessment.ps1
 ```
 
+Both options run the exact same script; the installer just adds a Start Menu/Desktop shortcut and a standard uninstall entry on top of it — pick whichever fits how you distribute the tool (e.g. installer for a managed fleet, portable for a USB-stick toolkit).
+
 ---
 
 ## Elevation
@@ -71,7 +77,10 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Invoke-Workpla
 
 ## Uninstall / Cleanup
 
-There is nothing to uninstall. Delete the folder. No registry entries, no scheduled tasks, no background services are created. Generated reports live in `output/` next to the script — delete that folder too if you want to remove scan history.
+- **Portable use (Option B):** there is nothing to uninstall. Delete the folder. No registry entries, no scheduled tasks, no background services are created.
+- **Installer use (Option A):** uninstall via Windows Settings → Apps, or the Start Menu shortcut created alongside the app. This removes the installed files and the `output/` folder under the install directory.
+
+Neither install path creates scheduled tasks or background services — the tool only runs while you actively trigger a scan.
 
 ---
 
