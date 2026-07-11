@@ -3,7 +3,7 @@
 ; Local build: iscc /DMyAppVersion=1.0.0 installer\WorkplaceAssessment.iss
 
 #ifndef MyAppVersion
-  #define MyAppVersion "1.0.1"
+  #define MyAppVersion "1.0.2"
 #endif
 
 #define MyAppName "WorkplaceAssessment"

@@ -11,7 +11,7 @@ jobs:
     name: Syntax, Lint & Smoke Test
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: PowerShell syntax check
         shell: pwsh
