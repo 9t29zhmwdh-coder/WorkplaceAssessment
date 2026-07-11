@@ -6,6 +6,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ---
 
+## [1.0.2] - 2026-07-11
+
+### Fixed
+
+- Updated actions/checkout, actions/upload-artifact and softprops/action-gh-release to their latest major versions in the release workflow, since GitHub is deprecating the Node.js 20 runtime and older action versions were being forced onto Node 24 and crashing during post-run cleanup.
+
 ## [1.0.1] - 2026-07-10
 
 ### Fixed
