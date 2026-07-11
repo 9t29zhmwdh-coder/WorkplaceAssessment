@@ -1,4 +1,4 @@
-# Security Policy — WorkplaceAssessment
+# Security Policy: WorkplaceAssessment
 
 ## Supported Versions
 
@@ -18,15 +18,15 @@ Response within 7 days.
 
 ## Security Design
 
-- No external network calls of any kind — the script never sends data anywhere, not even to `localhost`
+- No external network calls of any kind: the script never sends data anywhere, not even to `localhost`
 - No modules or dependencies are downloaded at runtime; everything ships in one `.ps1` file
 - No admin rights required for the baseline scan; the two checks that need elevation (TPM, battery-wear detail) degrade to "not scored" instead of failing or producing a false result when run unelevated
-- `Start-Assessment.cmd` requests UAC elevation via the standard Windows consent prompt (`Start-Process -Verb RunAs`) — it never silently escalates privileges
+- `Start-Assessment.cmd` requests UAC elevation via the standard Windows consent prompt (`Start-Process -Verb RunAs`), it never silently escalates privileges
 - Read-only by design: every check only queries system state (registry reads, WMI/CIM queries, cmdlets); nothing is modified on the scanned machine
 
 ## Installer
 
-`WorkplaceAssessment-Setup-*.exe` is built by CI from `installer/WorkplaceAssessment.iss` (Inno Setup) and published as a GitHub Release asset — it is not code-signed. Windows SmartScreen may warn on first run of an unsigned executable; verify you downloaded it from this repository's [Releases page](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/releases) before proceeding past that warning. The installer itself requires admin rights (it writes to Program Files), but installing it does not change the script's own elevation behavior described above.
+`WorkplaceAssessment-Setup-*.exe` is built by CI from `installer/WorkplaceAssessment.iss` (Inno Setup) and published as a GitHub Release asset, it is not code-signed. Windows SmartScreen may warn on first run of an unsigned executable; verify you downloaded it from this repository's [Releases page](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/releases) before proceeding past that warning. The installer itself requires admin rights (it writes to Program Files), but installing it does not change the script's own elevation behavior described above.
 
 ## Data Sensitivity
 
