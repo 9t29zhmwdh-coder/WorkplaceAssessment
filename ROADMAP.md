@@ -14,8 +14,8 @@
 
 ## Known Limitations
 
-- **Report UI is DE-CH only.** The script accepts a `-Lang` parameter with `EN` as a valid value, but the embedded localization dictionary only has German text, so passing `-Lang EN` currently has no effect on the rendered report. Tracked for v1.1.0.
-- **TPM and battery-wear checks need elevation or capable drivers.** These degrade to "not scored" rather than a false result when the underlying WMI query is denied or unsupported by the device driver — see [ARCHITECTURE.md](ARCHITECTURE.md#elevation-model).
+- **Report UI is DE-CH only.** The script accepts a `-Lang` parameter with `EN` as a valid value, but the embedded localization dictionary only has German text; passing `-Lang EN` currently has no effect on the rendered report. Tracked for v1.1.0.
+- **TPM and battery-wear checks need elevation or capable drivers.** These degrade to "not scored" rather than a false result when the underlying WMI query is denied or unsupported by the device driver; see [ARCHITECTURE.md](ARCHITECTURE.md#elevation-model).
 
 ## v1.1.0, Localization & CPU Compatibility
 

@@ -6,17 +6,17 @@ This guide walks you through running WorkplaceAssessment from scratch, even if y
 
 ## 1. Get the code
 
-**Option A — Installer (recommended if you just want to run it):**
+**Option A: Installer (recommended if you just want to run it):**
 1. Go to [Releases](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/releases) and download the latest `WorkplaceAssessment-Setup-*.exe`
 2. Run it and click through the setup wizard
-3. Launch **WorkplaceAssessment** from the Start Menu — skip straight to [step 3](#3-what-you-should-see), the installer already sets everything up
+3. Launch **WorkplaceAssessment** from the Start Menu; skip straight to [step 3](#3-what-you-should-see), the installer already sets everything up
 
-**Option B — Portable ZIP (no git required):**
+**Option B: Portable ZIP (no git required):**
 1. Go to the [WorkplaceAssessment GitHub page](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment)
 2. Click the green **"Code"** button → **"Download ZIP"**
 3. Extract the ZIP file somewhere convenient, e.g. `C:\Tools\WorkplaceAssessment`
 
-**Option C — git clone:**
+**Option C: git clone:**
 ```powershell
 git clone https://github.com/9t29zhmwdh-coder/WorkplaceAssessment.git
 ```
@@ -25,7 +25,7 @@ git clone https://github.com/9t29zhmwdh-coder/WorkplaceAssessment.git
 
 Open the extracted/cloned folder in File Explorer and double-click **`Start-Assessment.cmd`**.
 
-A UAC prompt ("Do you want to allow this app to make changes to your device?") appears — click **Yes**. This is required for the TPM 2.0 check to produce a real result; without it, that one check simply reports "not scored" instead of failing.
+A UAC prompt ("Do you want to allow this app to make changes to your device?") appears. Click **Yes**. This is required for the TPM 2.0 check to produce a real result; without it, that one check simply reports "not scored" instead of failing.
 
 ## 3. What you should see
 
@@ -39,14 +39,14 @@ If you don't want the elevation prompt (e.g. scripted/unattended use), run the `
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\Invoke-WorkplaceAssessment.ps1
 ```
 
-All checks except TPM (and, on some devices, battery-wear detail) still work fully unelevated — see [ARCHITECTURE.md](ARCHITECTURE.md#elevation-model).
+All checks except TPM (and, on some devices, battery-wear detail) still work fully unelevated; see [ARCHITECTURE.md](ARCHITECTURE.md#elevation-model).
 
 ## Command-line Options
 
 | Parameter | Description |
 |---|---|
 | `-NoOpen` | Generates the report without opening it in the browser afterward |
-| `-Lang <DE-CH\|EN>` | Report language — **currently DE-CH only has translated text**, `EN` is accepted but has no visible effect yet (see [ROADMAP.md](ROADMAP.md)) |
+| `-Lang <DE-CH\|EN>` | Report language: **currently DE-CH only has translated text**, `EN` is accepted but has no visible effect yet (see [ROADMAP.md](ROADMAP.md)) |
 
 ---
 
