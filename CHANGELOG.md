@@ -6,6 +6,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ---
 
+## [1.0.4] - 2026-07-12
+
+### Fixed
+
+- Removed em-dashes/en-dashes across ARCHITECTURE.md, PRIVACY.md, GETTING_STARTED.md, CONTRIBUTING.md, ROADMAP.md, and SECURITY.md (Swiss German orthography rule).
+
 ## [1.0.2] - 2026-07-11
 
 ### Fixed

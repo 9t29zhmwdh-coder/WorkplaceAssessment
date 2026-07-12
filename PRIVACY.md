@@ -1,8 +1,8 @@
-# Privacy Policy — WorkplaceAssessment
+# Privacy Policy: WorkplaceAssessment
 
 ## Summary
 
-WorkplaceAssessment runs entirely on the machine you execute it on. It never sends data anywhere — not to a server, not to the maintainer, not even to `localhost`.
+WorkplaceAssessment runs entirely on the machine you execute it on. It never sends data anywhere: not to a server, not to the maintainer, not even to `localhost`.
 
 ## What the Script Reads From the Scanned Machine
 

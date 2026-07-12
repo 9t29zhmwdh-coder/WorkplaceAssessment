@@ -6,9 +6,9 @@
 
 - Windows 10 or 11
 - PowerShell 5.1+ (built into Windows) or PowerShell 7+
-- [Inno Setup 6](https://jrsoftware.org/isdl.php) — only needed if you're changing `installer/WorkplaceAssessment.iss`; not required for script changes
+- [Inno Setup 6](https://jrsoftware.org/isdl.php): only needed if you're changing `installer/WorkplaceAssessment.iss`; not required for script changes
 
-There is nothing to install and no build step for the script itself — it runs as-is.
+There is nothing to install and no build step for the script itself; it runs as-is.
 
 ### Setup
 
@@ -33,7 +33,7 @@ There is nothing to install and no build step for the script itself — it runs 
 
 ## Changing the Installer
 
-`installer/WorkplaceAssessment.iss` is only compiled by CI (`.github/workflows/release.yml`) on a version tag push or via manual `workflow_dispatch` — there's no need to have Inno Setup installed unless you're editing that file directly. To test a change locally:
+`installer/WorkplaceAssessment.iss` is only compiled by CI (`.github/workflows/release.yml`) on a version tag push or via manual `workflow_dispatch`; there's no need to have Inno Setup installed unless you're editing that file directly. To test a change locally:
 
 ```powershell
 iscc /DMyAppVersion=0.0.0-test installer\WorkplaceAssessment.iss
@@ -44,18 +44,18 @@ This produces `dist\WorkplaceAssessment-Setup-0.0.0-test.exe`. Run it in a VM or
 ## Code Style
 
 - Follow the existing compact style: each check is a single self-contained function using the `Finding` helper (see [ARCHITECTURE.md](ARCHITECTURE.md))
-- Every WMI/CIM/registry query must be wrapped in `try`/`catch` and degrade to `info`/`0`/`0` on failure — never let one check crash the whole run
+- Every WMI/CIM/registry query must be wrapped in `try`/`catch` and degrade to `info`/`0`/`0` on failure; never let one check crash the whole run
 - New evidence/risk/recommendation text goes into the `const T = {...}` dictionary in the HTML template, using the same `key:'text with {placeholder}'` format as existing entries
-- Do not add network calls, telemetry, or external module dependencies — see [PRIVACY.md](PRIVACY.md) and [SECURITY.md](SECURITY.md)
+- Do not add network calls, telemetry, or external module dependencies: see [PRIVACY.md](PRIVACY.md) and [SECURITY.md](SECURITY.md)
 
 ## Commit Convention
 
-`[type] description` — where type is:
-- `[feat]` — new feature (e.g. a new check)
-- `[fix]` — bug fix
-- `[docs]` — documentation only
-- `[refactor]` — code cleanup
-- `[test]` — tests only
+`[type] description`, where type is:
+- `[feat]`: new feature (e.g. a new check)
+- `[fix]`: bug fix
+- `[docs]`: documentation only
+- `[refactor]`: code cleanup
+- `[test]`: tests only
 
 ## Questions?
 
