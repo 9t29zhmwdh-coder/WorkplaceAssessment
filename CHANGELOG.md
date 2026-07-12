@@ -10,7 +10,17 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ### Fixed
 
-- Removed em-dashes/en-dashes across ARCHITECTURE.md, PRIVACY.md, GETTING_STARTED.md, CONTRIBUTING.md, ROADMAP.md, and SECURITY.md (Swiss German orthography rule).
+- Removed em-dashes/en-dashes across ARCHITECTURE.md, PRIVACY.md, GETTING_STARTED.md, CONTRIBUTING.md, ROADMAP.md, and SECURITY.md (Swiss German orthography rule). Two of these had survived the v1.0.3 cleanup below (one each in ROADMAP.md and SECURITY.md).
+
+## [1.0.3] - 2026-07-11
+
+### Added
+
+- Documented Dual-Licensing readiness assessment in ROADMAP.md.
+
+### Fixed
+
+- Removed em-dashes from ROADMAP.md and SECURITY.md.
 
 ## [1.0.2] - 2026-07-11
 
