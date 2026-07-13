@@ -69,6 +69,18 @@ Both options run the exact same script; the installer just adds a Start Menu/Des
 
 ---
 
+## Historical Trend Comparison
+
+Run the same device's assessment periodically and compare two JSON reports to see what changed, not just the two independent snapshots:
+
+```powershell
+.\scripts\Compare-WorkplaceAssessment.ps1 -BaselinePath .\output\Assessment_PC01_2026-06-01.json -CurrentPath .\output\Assessment_PC01_2026-07-01.json
+```
+
+Prints the overall score movement and a table of every check that changed, tagged `improved`, `regressed`, `new` (didn't exist in the baseline, e.g. no battery detected before), or `removed`. A check that stayed the same is omitted from the table so real changes aren't buried. Add `-OutJson trend.json` to also save the comparison as JSON, e.g. for a ticketing system or a script that only wants to alert on `regressed`/`removed`.
+
+---
+
 ## Elevation
 
 `Start-Assessment.cmd` checks whether it's already running elevated and, if not, requests UAC elevation automatically before scanning. This is only needed for the TPM 2.0 check: `Win32_Tpm` denies non-elevated CIM clients on Windows 11 in practice. Every other check works fully without admin rights; if you skip elevation (e.g. by running the `.ps1` directly), the TPM check simply reports "not scored" instead of a false result.

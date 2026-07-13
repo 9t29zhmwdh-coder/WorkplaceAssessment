@@ -6,6 +6,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ---
 
+## [1.1.0] - 2026-07-13
+
+### Added
+
+- `scripts/Compare-WorkplaceAssessment.ps1`: historical trend comparison between two JSON reports for the same device. Diffs every check by score/status and tags it `improved`, `regressed`, `new`, or `removed`; prints an overall-score delta and a console table of everything that changed. `-OutJson` saves the comparison for scripted or ticketing-system use. Closes the historical-trend blocker in this repo's Dual-Licensing Readiness assessment (ROADMAP.md); fleet batch mode/CSV export and English localization remain open.
+
 ## [1.0.4] - 2026-07-12
 
 ### Fixed

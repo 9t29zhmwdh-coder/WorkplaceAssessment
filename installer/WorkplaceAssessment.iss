@@ -41,6 +41,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "..\scripts\Invoke-WorkplaceAssessment.ps1"; DestDir: "{app}\scripts"; Flags: ignoreversion
+Source: "..\scripts\Compare-WorkplaceAssessment.ps1"; DestDir: "{app}\scripts"; Flags: ignoreversion
 Source: "..\Start-Assessment.cmd"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.de.md"; DestDir: "{app}"; Flags: ignoreversion
