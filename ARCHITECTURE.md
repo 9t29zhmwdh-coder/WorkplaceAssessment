@@ -2,15 +2,16 @@
 
 ## Overview
 
-WorkplaceAssessment is a single, self-contained PowerShell script. There is no build step, no external module dependency, and no installer: `scripts/Invoke-WorkplaceAssessment.ps1` is the entire application. It collects device signals via built-in Windows cmdlets and WMI/CIM classes, scores them, and writes a JSON report plus a self-rendering HTML report with an embedded JavaScript viewer. Nothing leaves the machine.
+WorkplaceAssessment is a pair of self-contained PowerShell scripts. There is no build step, no external module dependency, and no installer requirement: `scripts/Invoke-WorkplaceAssessment.ps1` is the entire scanning application, collecting device signals via built-in Windows cmdlets and WMI/CIM classes, scoring them, and writing a JSON report plus a self-rendering HTML report with an embedded JavaScript viewer. `scripts/Compare-WorkplaceAssessment.ps1` reads two of those JSON reports and diffs them; it touches no CIM/WMI classes and has no Windows-specific dependency of its own. Nothing leaves the machine.
 
 ```
 WorkplaceAssessment/
 ├── scripts/
-│   └── Invoke-WorkplaceAssessment.ps1   # entire application
+│   ├── Invoke-WorkplaceAssessment.ps1   # scanning application
+│   └── Compare-WorkplaceAssessment.ps1  # historical trend comparison between two JSON reports
 ├── Start-Assessment.cmd                 # UAC-elevating launcher
 ├── installer/
-│   └── WorkplaceAssessment.iss          # Inno Setup script, packages the two files above
+│   └── WorkplaceAssessment.iss          # Inno Setup script, packages the scripts above
 └── output/                              # generated reports (gitignored, local only)
 ```
 

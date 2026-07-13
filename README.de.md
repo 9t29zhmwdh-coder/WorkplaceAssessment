@@ -69,6 +69,18 @@ Beide Optionen führen exakt dasselbe Skript aus; der Installer ergänzt ledigli
 
 ---
 
+## Zeitlicher Verlaufsvergleich
+
+Führe das Assessment desselben Geräts periodisch aus und vergleiche zwei JSON-Reports, um zu sehen, was sich geändert hat, nicht nur die zwei unabhängigen Momentaufnahmen:
+
+```powershell
+.\scripts\Compare-WorkplaceAssessment.ps1 -BaselinePath .\output\Assessment_PC01_2026-06-01.json -CurrentPath .\output\Assessment_PC01_2026-07-01.json
+```
+
+Zeigt die Gesamtbewertungsveränderung und eine Tabelle jeder geänderten Prüfung, markiert als `improved`, `regressed`, `new` (existierte im Baseline-Report nicht, z. B. kein Akku erkannt zuvor) oder `removed`. Eine unveränderte Prüfung wird in der Tabelle weggelassen, damit echte Änderungen nicht untergehen. Mit `-OutJson trend.json` wird der Vergleich zusätzlich als JSON gespeichert, z. B. für ein Ticketing-System oder ein Skript, das nur bei `regressed`/`removed` alarmieren soll.
+
+---
+
 ## Elevation
 
 `Start-Assessment.cmd` prüft, ob es bereits erhöht läuft, und fordert andernfalls automatisch UAC-Elevation an, bevor der Scan startet. Das ist ausschliesslich für den TPM-2.0-Check nötig: `Win32_Tpm` verweigert nicht-elevierten CIM-Clients unter Windows 11 in der Praxis den Zugriff. Alle anderen Checks funktionieren vollständig ohne Adminrechte; ohne Elevation (z. B. bei direktem Aufruf der `.ps1`) meldet der TPM-Check schlicht „Nicht bewertet" statt eines falschen Ergebnisses.

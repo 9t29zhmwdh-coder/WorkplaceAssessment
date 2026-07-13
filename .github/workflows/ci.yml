@@ -16,13 +16,18 @@ jobs:
       - name: PowerShell syntax check
         shell: pwsh
         run: |
-          $parseErrors = $null
-          $tokens = $null
-          [System.Management.Automation.Language.Parser]::ParseFile("scripts/Invoke-WorkplaceAssessment.ps1", [ref]$tokens, [ref]$parseErrors) | Out-Null
-          if ($parseErrors.Count -gt 0) {
-            $parseErrors | ForEach-Object { Write-Error $_.Message }
-            exit 1
+          $scripts = @('scripts/Invoke-WorkplaceAssessment.ps1', 'scripts/Compare-WorkplaceAssessment.ps1')
+          $failed = $false
+          foreach ($path in $scripts) {
+            $parseErrors = $null
+            $tokens = $null
+            [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$parseErrors) | Out-Null
+            if ($parseErrors.Count -gt 0) {
+              $parseErrors | ForEach-Object { Write-Error "${path}: $($_.Message)" }
+              $failed = $true
+            }
           }
+          if ($failed) { exit 1 }
 
       - name: Install PSScriptAnalyzer
         shell: pwsh
@@ -31,7 +36,8 @@ jobs:
       - name: Run PSScriptAnalyzer
         shell: pwsh
         run: |
-          $results = Invoke-ScriptAnalyzer -Path scripts/Invoke-WorkplaceAssessment.ps1 -Severity Error
+          $paths = @('scripts/Invoke-WorkplaceAssessment.ps1', 'scripts/Compare-WorkplaceAssessment.ps1')
+          $results = foreach ($path in $paths) { Invoke-ScriptAnalyzer -Path $path -Severity Error }
           if ($results) {
             $results | Format-Table -AutoSize
             exit 1
@@ -45,3 +51,19 @@ jobs:
           if (-not $report) { throw "No JSON report was generated" }
           $json = Get-Content $report.FullName -Raw | ConvertFrom-Json
           if (-not $json.findings -or $json.findings.Count -eq 0) { throw "Report contains no findings" }
+
+      - name: Smoke test (trend comparison)
+        shell: pwsh
+        run: |
+          Start-Sleep -Seconds 1
+          .\scripts\Invoke-WorkplaceAssessment.ps1 -NoOpen
+          $reports = Get-ChildItem -Path output -Filter *.json | Sort-Object LastWriteTime
+          if ($reports.Count -lt 2) { throw "Expected two JSON reports for the comparison smoke test" }
+          $outJson = Join-Path $env:RUNNER_TEMP 'trend.json'
+          .\scripts\Compare-WorkplaceAssessment.ps1 -BaselinePath $reports[0].FullName -CurrentPath $reports[1].FullName -OutJson $outJson
+          $trend = Get-Content $outJson -Raw | ConvertFrom-Json
+          if (-not $trend.summary) { throw "Comparison output has no summary" }
+          $validTrends = @('improved', 'regressed', 'new', 'removed', 'unchanged')
+          foreach ($change in $trend.changes) {
+            if ($validTrends -notcontains $change.trend) { throw "Unexpected trend value: $($change.trend)" }
+          }
