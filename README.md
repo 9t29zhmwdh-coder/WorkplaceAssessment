@@ -11,6 +11,7 @@
 WorkplaceAssessment checks a Windows machine's reboot state, uptime, storage, local admin accounts, remote-access tools, autostart entries, Secure Boot, TPM 2.0 readiness, Windows edition/license activation, and battery health, then produces a scored, color-coded HTML report plus a machine-readable JSON export. Everything runs locally; nothing is ever transmitted anywhere.
 
 [![CI](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions) ![Platform](https://img.shields.io/badge/Platform-Windows_10_%7C_11-lightgrey) ![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-5391FE?logo=powershell&logoColor=white) ![Dependencies](https://img.shields.io/badge/Dependencies-none-brightgreen)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/9t29zhmwdh-coder/WorkplaceAssessment/badge)](https://securityscorecards.dev/viewer/?uri=github.com/9t29zhmwdh-coder/WorkplaceAssessment)
 
 > **How it runs:** WorkplaceAssessment is a single PowerShell script, not an installed app or background service. Double-click `Start-Assessment.cmd`, it scans once, writes a report, and exits, nothing stays resident.
 
