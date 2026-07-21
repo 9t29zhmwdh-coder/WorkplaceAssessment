@@ -6,6 +6,24 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ---
 
+## [1.2.0] - 2026-07-21
+
+### Added
+
+- New checks: BitLocker, Windows Defender status, Defender exclusions, Windows Firewall, Windows Update compliance, RDP exposure, Credential Guard/VBS, LAPS, CPU compatibility, RAM/storage minimums, Windows version currency (feature-update aging), and Microsoft 365/Entra device-join status (informational only, does not count toward the score).
+- New `windows11` category (Secure Boot, TPM, CPU, RAM/storage, version currency) and `m365` informational category, alongside the existing `security`/`health`/`storage`/`management`.
+- Per-item findings: remote-access tools, suspicious autostart entries, and Defender exclusions now report one row per detected item instead of a single bundled finding, so each can be reviewed and accepted individually.
+- Accepted-exceptions feature in the report: any scored finding can be checked off as a documented, reasoned exception directly in the HTML report; the recomputed score and the reason/timestamp are persisted per computer in `localStorage` and included in the JSON export.
+- "Private device / Company device" toggle in the report header: excludes LAPS and Credential Guard from the score on devices marked private, since those checks only make sense on a centrally managed device. Defaults from detected Entra-join + MDM-enrollment state.
+- Elevation fallbacks: Secure Boot now resolves via a registry read when `Confirm-SecureBootUEFI` needs elevation; BitLocker falls back to parsing `manage-bde -status`; Windows Update compliance falls back to `Get-HotFix`/`Get-Service wuauserv` when the registry timestamp is empty.
+- Checks that specifically require elevation (TPM, BitLocker, Defender exclusions) now report "administrator rights required" instead of a generic "check manually" message.
+
+### Fixed
+
+- Autostart check no longer flags the legitimate Bing Wallpaper self-update helper (and similar known-good Microsoft Store app patterns) as suspicious.
+- BitLocker's `manage-bde` fallback validates that an actual status line is present before trusting the output; `manage-bde` prints its access-denied error to stdout (not stderr) when unelevated, which would otherwise have been misread as "BitLocker off".
+- Windows version currency now compares versions by a sequential half-year number instead of a fixed lookup list, so a version newer than the "latest known" constant (e.g. a preview build) is correctly recognized as ahead, not unknown.
+
 ## [1.1.2] - 2026-07-20
 
 ### Changed

@@ -8,7 +8,7 @@
 
 **Offline Windows-Gerätezustands- und Windows-11-Fähigkeits-Scanner. Ein PowerShell-Skript, keine Abhängigkeiten, keine Netzwerkzugriffe.**
 
-WorkplaceAssessment prüft Neustartstatus, Laufzeit, Speicherplatz, lokale Administratorkonten, Fernwartungstools, Autostart-Einträge, Secure Boot, TPM-2.0-Bereitschaft, Windows-Edition/Lizenzaktivierung und Akkuzustand eines Windows-Geräts und erzeugt daraus einen bewerteten, farbcodierten HTML-Report sowie einen maschinenlesbaren JSON-Export. Alles läuft lokal, es wird nie etwas übertragen.
+WorkplaceAssessment prüft Neustartstatus, Laufzeit, Speicherplatz, Akkuzustand, lokale Administratorkonten, Fernwartungstools, Autostart-Einträge, Windows-11-Bereitschaft (Secure Boot, TPM 2.0, CPU, RAM/Speicher, Aktualität des Feature-Updates) sowie eine Sicherheits-Baseline (BitLocker, Defender-Status und -Ausschlüsse, Firewall, Windows-Update-Compliance, RDP-Exposition, Credential Guard/VBS, LAPS) eines Windows-Geräts und erzeugt daraus einen bewerteten, farbcodierten HTML-Report sowie einen maschinenlesbaren JSON-Export. Alles läuft lokal, es wird nie etwas übertragen.
 
 [![CI](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions) [![CodeQL](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/security/code-scanning) [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/9t29zhmwdh-coder/WorkplaceAssessment/badge)](https://securityscorecards.dev/viewer/?uri=github.com/9t29zhmwdh-coder/WorkplaceAssessment) [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13682/badge)](https://www.bestpractices.dev/projects/13682)
 
@@ -16,7 +16,7 @@ WorkplaceAssessment prüft Neustartstatus, Laufzeit, Speicherplatz, lokale Admin
 
 > **So läuft es:** WorkplaceAssessment ist ein einzelnes PowerShell-Skript, keine installierte App und kein Hintergrunddienst. Doppelklick auf `Start-Assessment.cmd` genügt: einmal scannen, Report schreiben, fertig, nichts bleibt resident.
 
-**In der Praxis:** Du startest den Launcher, bestätigst optional einen UAC-Prompt (nötig, damit der TPM-Check ein echtes Ergebnis liefert), und erhältst einen Report mit Gesamtscore (0-100) und Aufschlüsselung nach vier Kategorien. Jeder Befund zeigt Evidenz, Risiko und eine konkrete Empfehlung; ein Klick auf eine Zeile öffnet die technischen Rohdaten dahinter.
+**In der Praxis:** Du startest den Launcher, bestätigst optional einen UAC-Prompt (nötig, damit TPM-, BitLocker-, Secure-Boot- und Defender-Ausschlüsse-Check ein echtes Ergebnis liefern), und erhältst einen Report mit Gesamtscore (0-100) und Aufschlüsselung nach fünf gewerteten Kategorien (plus einem rein informativen Microsoft-365-/Entra-Abschnitt, der nicht in den Score einfliesst). Jeder Befund zeigt Evidenz, Risiko und eine konkrete Empfehlung; ein Klick auf eine Zeile öffnet die technischen Rohdaten dahinter. Befunde aus einer Liste (gefundene Fernwartungstools, auffällige Autostart-Einträge, Defender-Ausschlüsse) werden einzeln pro Fund gemeldet statt gebündelt, sodass jeder einzeln geprüft und, falls es sich um eine bekannte/akzeptierte Ausnahme handelt, direkt im Report mit dokumentierter Begründung abgehakt werden kann. Ein Umschalter "Privates Gerät / Firmengerät" oben im Report bestimmt, welche Checks (LAPS, Credential Guard) in die Bewertung einfliessen, da diese nur auf zentral verwalteten Geräten sinnvoll sind.
 
 ---
 
@@ -33,11 +33,23 @@ WorkplaceAssessment prüft Neustartstatus, Laufzeit, Speicherplatz, lokale Admin
 | Akkuzustand | Gerätezustand | Verschleiss-% aus Design- vs. Ist-Kapazität; Desktops ohne Akku werden als nicht anwendbar markiert |
 | Freier Speicherplatz | Speicher | Prozentbasierte Schwellenwerte |
 | Lokale Administratoren | Verwaltung | Markiert eine ungewöhnlich hohe Admin-Anzahl |
-| Fernwartungstools | Verwaltung | Erkennt TeamViewer, AnyDesk, RealVNC, RustDesk und ähnliche |
+| Fernwartungstools | Verwaltung | Ein Befund pro gefundenem Tool (TeamViewer, AnyDesk, RealVNC, RustDesk u. ä.), einzeln akzeptierbar |
 | Windows-Edition & Lizenz | Verwaltung | Markiert Nicht-Business-Editionen (kein BitLocker/GPO/RDP-Host/Domain-Join) und nicht aktivierte Lizenzen |
-| Autostart-Einträge | Sicherheit | Heuristischer Abgleich auf auffällige Autostart-Muster |
-| Secure Boot | Sicherheit | |
-| TPM 2.0 | Sicherheit | Windows-11-Hardwarevoraussetzung; benötigt Elevation für ein echtes Ergebnis |
+| LAPS (lokales Admin-Passwort) | Verwaltung | Erkennt Windows LAPS oder Legacy-LAPS; bei als "Privat" markierten Geräten von der Bewertung ausgeschlossen |
+| Autostart-Einträge | Sicherheit | Ein Befund pro auffälligem Eintrag; bekannte Muster (z. B. Bing Wallpaper) werden vorab herausgefiltert, um Fehlalarme zu vermeiden |
+| BitLocker | Sicherheit | Fällt auf `manage-bde -status` zurück, falls das `Get-BitLockerVolume`-Cmdlet nicht verfügbar ist; validiert die tatsächliche Statuszeile, bevor sie als Ergebnis übernommen wird |
+| Windows Defender Status | Sicherheit | Echtzeitschutz, Signaturalter |
+| Defender-Ausschlüsse | Sicherheit | Ein Befund pro konfiguriertem Ausschluss (Pfad/Endung/Prozess/IP); Malware trägt sich häufig selbst als Ausschluss ein, um Scans zu umgehen, daher ergibt eine leere Liste 100% |
+| Windows-Firewall | Sicherheit | Alle drei Profile |
+| Windows-Update-Compliance | Sicherheit | Fällt auf `Get-HotFix` und `Get-Service wuauserv` zurück, falls der Registry-Zeitstempel leer ist |
+| RDP-Exposition | Sicherheit | Markiert RDP ohne Network Level Authentication |
+| Credential Guard / VBS | Sicherheit | Wird bewertet, wenn verfügbar aber inaktiv; zählt nur bei als "Firmengerät" markierten Geräten in die Gesamtwertung |
+| Secure Boot | Windows-11-Bereitschaft | Fällt auf einen Registry-Wert zurück, falls `Confirm-SecureBootUEFI` Elevation benötigt |
+| TPM 2.0 | Windows-11-Bereitschaft | Windows-11-Hardwarevoraussetzung; benötigt Elevation für ein echtes Ergebnis |
+| CPU-Kompatibilität | Windows-11-Bereitschaft | Heuristik anhand des Modellnamens, keine Garantie |
+| RAM-/Speicher-Mindestwerte | Windows-11-Bereitschaft | 4 GB RAM / 64 GB Speicher |
+| Windows-Versionsaktualität | Windows-11-Bereitschaft | Vergleicht das installierte Feature-Update (z. B. `24H2`) mit der zum Skriptstand bekannten aktuellsten Version |
+| Microsoft 365 / Entra Geräteanbindung | Nur informativ | Meldet Entra-/Intune-Einbindung; zählt nicht in die Bewertung |
 
 ---
 
@@ -85,7 +97,7 @@ Zeigt die Gesamtbewertungsveränderung und eine Tabelle jeder geänderten Prüfu
 
 ## Elevation
 
-`Start-Assessment.cmd` prüft, ob es bereits erhöht läuft, und fordert andernfalls automatisch UAC-Elevation an, bevor der Scan startet. Das ist ausschliesslich für den TPM-2.0-Check nötig: `Win32_Tpm` verweigert nicht-elevierten CIM-Clients unter Windows 11 in der Praxis den Zugriff. Alle anderen Checks funktionieren vollständig ohne Adminrechte; ohne Elevation (z. B. bei direktem Aufruf der `.ps1`) meldet der TPM-Check schlicht „Nicht bewertet" statt eines falschen Ergebnisses.
+`Start-Assessment.cmd` prüft, ob es bereits erhöht läuft, und fordert andernfalls automatisch UAC-Elevation an, bevor der Scan startet. Elevation wird für ein echtes Ergebnis bei folgenden Checks benötigt: TPM 2.0, BitLocker und Defender-Ausschlüsse (`Win32_Tpm`, `Get-BitLockerVolume`/`manage-bde` sowie die Ausschluss-Listen von `Get-MpPreference` verweigern nicht-elevierten Clients unter Windows 11 in der Praxis den Zugriff). Secure Boot funktioniert dank Registry-Fallback auch ohne Elevation, obwohl `Confirm-SecureBootUEFI` selbst Elevation benötigt. Alle anderen Checks funktionieren vollständig ohne Adminrechte; ohne Elevation (z. B. bei direktem Aufruf der `.ps1`) melden die betroffenen Checks „Administratorrechte erforderlich" statt eines falschen Ergebnisses.
 
 ---
 
