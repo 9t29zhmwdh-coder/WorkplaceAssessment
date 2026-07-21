@@ -1,0 +1,47 @@
+name: Publish NuGet Package
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to pack and publish (e.g. 1.2.1), for a manual/backfill publish without pushing a new tag"
+        required: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    name: Pack and Publish to GitHub Packages
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Determine version
+        id: version
+        shell: pwsh
+        run: |
+          if ("${{ github.ref_type }}" -eq "tag") {
+            $version = "${{ github.ref_name }}" -replace '^v', ''
+          } else {
+            $version = "${{ github.event.inputs.version }}"
+          }
+          "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Install NuGet CLI
+        shell: pwsh
+        run: choco install nuget.commandline --no-progress -y
+
+      - name: Pack
+        shell: pwsh
+        run: nuget pack nuget\WorkplaceAssessment.nuspec -Version ${{ steps.version.outputs.version }} -OutputDirectory nupkg
+
+      - name: Push to GitHub Packages
+        shell: pwsh
+        run: |
+          nuget sources add -Name github -Source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" -Username "${{ github.repository_owner }}" -Password "${{ secrets.GITHUB_TOKEN }}"
+          nuget push nupkg\*.nupkg -Source github -ApiKey "${{ secrets.GITHUB_TOKEN }}" -SkipDuplicate

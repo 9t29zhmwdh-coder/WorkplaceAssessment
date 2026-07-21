@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>WorkplaceAssessment</id>
+    <version>$version$</version>
+    <authors>Rafael Yilmaz</authors>
+    <owners>9t29zhmwdh-coder</owners>
+    <projectUrl>https://github.com/9t29zhmwdh-coder/WorkplaceAssessment</projectUrl>
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Offline Windows device health and Windows-11-readiness scanner. One PowerShell script, zero dependencies, zero network calls. Checks reboot state, uptime, storage, battery, local admins, remote-access tools, autostart entries, Windows 11 readiness (Secure Boot/TPM/CPU/RAM/version currency), and a security baseline (BitLocker, Defender, Firewall, Windows Update, RDP, Credential Guard, LAPS).</description>
+    <releaseNotes>See https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/blob/main/CHANGELOG.md</releaseNotes>
+    <readme>README.md</readme>
+    <tags>windows powershell device-health security compliance windows11 sysadmin msp</tags>
+    <repository type="git" url="https://github.com/9t29zhmwdh-coder/WorkplaceAssessment.git" />
+  </metadata>
+  <files>
+    <file src="..\scripts\Invoke-WorkplaceAssessment.ps1" target="content\scripts\Invoke-WorkplaceAssessment.ps1" />
+    <file src="..\scripts\Compare-WorkplaceAssessment.ps1" target="content\scripts\Compare-WorkplaceAssessment.ps1" />
+    <file src="..\Start-Assessment.cmd" target="content\Start-Assessment.cmd" />
+    <file src="..\README.md" target="README.md" />
+    <file src="..\README.de.md" target="content\README.de.md" />
+    <file src="..\LICENSE" target="content\LICENSE" />
+  </files>
+</package>
