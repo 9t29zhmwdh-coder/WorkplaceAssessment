@@ -41,6 +41,12 @@ function Get-AssessmentReport {
 
 function Get-FindingKey {
     param($Finding)
+    # Some checks (remote-access tools, autostart entries, Defender exclusions) emit one Finding
+    # per detected item and disambiguate them via itemKey; without it, multiple findings sharing
+    # the same categoryKey/checkKey would silently overwrite each other in the lookup below.
+    if ($Finding.itemKey) {
+        return "$($Finding.categoryKey)/$($Finding.checkKey)/$($Finding.itemKey)"
+    }
     return "$($Finding.categoryKey)/$($Finding.checkKey)"
 }
 

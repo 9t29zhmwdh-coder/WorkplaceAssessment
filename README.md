@@ -8,7 +8,7 @@
 
 **Offline Windows device health and Windows-11-readiness scanner. One PowerShell script, zero dependencies, zero network calls.**
 
-WorkplaceAssessment checks a Windows machine's reboot state, uptime, storage, local admin accounts, remote-access tools, autostart entries, Secure Boot, TPM 2.0 readiness, Windows edition/license activation, and battery health, then produces a scored, color-coded HTML report plus a machine-readable JSON export. Everything runs locally; nothing is ever transmitted anywhere.
+WorkplaceAssessment checks a Windows machine's reboot state, uptime, storage, battery health, local admin accounts, remote-access tools, autostart entries, Windows 11 readiness (Secure Boot, TPM 2.0, CPU, RAM/storage, feature-update currency), and a security baseline (BitLocker, Defender status and exclusions, Firewall, Windows Update compliance, RDP exposure, Credential Guard/VBS, LAPS), then produces a scored, color-coded HTML report plus a machine-readable JSON export. Everything runs locally; nothing is ever transmitted anywhere.
 
 [![CI](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions) [![CodeQL](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/security/code-scanning) [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/9t29zhmwdh-coder/WorkplaceAssessment/badge)](https://securityscorecards.dev/viewer/?uri=github.com/9t29zhmwdh-coder/WorkplaceAssessment) [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13682/badge)](https://www.bestpractices.dev/projects/13682)
 
@@ -16,7 +16,7 @@ WorkplaceAssessment checks a Windows machine's reboot state, uptime, storage, lo
 
 > **How it runs:** WorkplaceAssessment is a single PowerShell script, not an installed app or background service. Double-click `Start-Assessment.cmd`, it scans once, writes a report, and exits, nothing stays resident.
 
-**In practice:** you run the launcher, optionally confirm a UAC prompt (needed for the TPM check to return real data), and get a report showing an overall score out of 100 with a breakdown across four categories. Every finding lists its evidence, the risk it represents, and a concrete recommendation; click a row to see the raw technical details behind it.
+**In practice:** you run the launcher, optionally confirm a UAC prompt (needed for the TPM, BitLocker, Secure Boot and Defender-exclusions checks to return real data), and get a report showing an overall score out of 100 with a breakdown across five scored categories (plus an informational Microsoft 365/Entra section that doesn't count toward the score). Every finding lists its evidence, the risk it represents, and a concrete recommendation; click a row to see the raw technical details behind it. Findings that come from a list (remote-access tools found, suspicious autostart entries, Defender exclusions) are reported one row per item, not bundled, so each one can be reviewed and, if it's a known/accepted exception, checked off individually with a documented reason directly in the report. A "Private device / Company device" toggle at the top of the report adjusts which checks (LAPS, Credential Guard) count toward the score, since those only make sense on a centrally managed device.
 
 ---
 
@@ -33,11 +33,23 @@ WorkplaceAssessment checks a Windows machine's reboot state, uptime, storage, lo
 | Battery health | Health | Wear % from design vs. full-charge capacity; desktops without a battery are marked not applicable |
 | System drive free space | Storage | Percentage-based thresholds |
 | Local administrators | Management | Flags an unusually high admin count |
-| Remote-access tools | Management | Detects TeamViewer, AnyDesk, RealVNC, RustDesk, and similar |
+| Remote-access tools | Management | One finding per detected tool (TeamViewer, AnyDesk, RealVNC, RustDesk, and similar), individually acknowledgeable |
 | Windows edition & license | Management | Flags non-business editions (no BitLocker/GPO/RDP-host/domain-join) and non-activated licenses |
-| Autostart entries | Security | Heuristic match for suspicious autostart patterns |
-| Secure Boot | Security | |
-| TPM 2.0 | Security | Windows 11 hardware requirement; needs elevation for a real result |
+| LAPS (local admin password) | Management | Detects Windows LAPS or legacy LAPS; excluded from the score on devices marked "Private" |
+| Autostart entries | Security | One finding per suspicious entry; known-good patterns (e.g. Bing Wallpaper) are pre-filtered to avoid false positives |
+| BitLocker | Security | Falls back to `manage-bde -status` if the `Get-BitLockerVolume` cmdlet is unavailable; validates the actual status line before trusting it |
+| Windows Defender status | Security | Real-time protection, signature age |
+| Defender exclusions | Security | One finding per configured exclusion (path/extension/process/IP); malware commonly adds itself as an exclusion to evade scanning, so an empty list scores 100% |
+| Windows Firewall | Security | All three profiles |
+| Windows Update compliance | Security | Falls back to `Get-HotFix` and `Get-Service wuauserv` if the registry timestamp is empty |
+| RDP exposure | Security | Flags RDP enabled without Network Level Authentication |
+| Credential Guard / VBS | Security | Scored when available-but-inactive; only counts toward the total on devices marked "Company" |
+| Secure Boot | Windows 11 Readiness | Falls back to a registry read if `Confirm-SecureBootUEFI` needs elevation |
+| TPM 2.0 | Windows 11 Readiness | Windows 11 hardware requirement; needs elevation for a real result |
+| CPU compatibility | Windows 11 Readiness | Heuristic based on model name, not a guarantee |
+| RAM / storage minimums | Windows 11 Readiness | 4 GB RAM / 64 GB storage |
+| Windows version currency | Windows 11 Readiness | Compares the installed feature update (e.g. `24H2`) against the latest known at the time the script was written |
+| Microsoft 365 / Entra device join | Informational only | Reports Entra/Intune enrollment; does not count toward the score |
 
 ---
 
@@ -85,7 +97,7 @@ Prints the overall score movement and a table of every check that changed, tagge
 
 ## Elevation
 
-`Start-Assessment.cmd` checks whether it's already running elevated and, if not, requests UAC elevation automatically before scanning. This is only needed for the TPM 2.0 check: `Win32_Tpm` denies non-elevated CIM clients on Windows 11 in practice. Every other check works fully without admin rights; if you skip elevation (e.g. by running the `.ps1` directly), the TPM check simply reports "not scored" instead of a false result.
+`Start-Assessment.cmd` checks whether it's already running elevated and, if not, requests UAC elevation automatically before scanning. Elevation is needed for a real result from: TPM 2.0, BitLocker, and Defender exclusions (`Win32_Tpm`, `Get-BitLockerVolume`/`manage-bde`, and `Get-MpPreference`'s exclusion lists all deny non-elevated clients on Windows 11 in practice). Secure Boot works without elevation via a registry fallback even though `Confirm-SecureBootUEFI` itself requires it. Every other check works fully without admin rights; if you skip elevation (e.g. by running the `.ps1` directly), the checks that need it report "administrator rights required" instead of a false result.
 
 ---
 
