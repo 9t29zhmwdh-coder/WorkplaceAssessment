@@ -12,6 +12,8 @@ WorkplaceAssessment/
 ├── Start-Assessment.cmd                 # UAC-elevating launcher
 ├── installer/
 │   └── WorkplaceAssessment.iss          # Inno Setup script, packages the scripts above
+├── nuget/
+│   └── WorkplaceAssessment.nuspec       # NuGet package manifest, packages the scripts above
 └── output/                              # generated reports (gitignored, local only)
 ```
 
@@ -111,3 +113,7 @@ None at runtime. Only built-in Windows PowerShell cmdlets and CIM/WMI classes. N
 `installer/WorkplaceAssessment.iss` is an [Inno Setup](https://jrsoftware.org/isinfo.php) script that packages `scripts/Invoke-WorkplaceAssessment.ps1`, `Start-Assessment.cmd`, and the docs into a Program Files install with a Start Menu shortcut and a standard uninstaller entry. It changes nothing about how the application itself runs; it's purely a distribution wrapper around the same two files used in the portable case.
 
 `.github/workflows/release.yml` compiles this script on `windows-latest` (via Chocolatey's `innosetup` package) whenever a `v*.*.*` tag is pushed, and attaches the resulting `WorkplaceAssessment-Setup-<version>.exe` to a GitHub Release. It can also be triggered manually (`workflow_dispatch`) to produce a test build without cutting a release.
+
+## NuGet Package
+
+`nuget/WorkplaceAssessment.nuspec` packages the same two scripts, `Start-Assessment.cmd`, and the docs as a plain content-only NuGet package (no `install.ps1`/tools-folder auto-execution: the package is a way to fetch the files, not to trigger a scan on install). `.github/workflows/nuget-publish.yml` packs it with `nuget.exe` (via Chocolatey) and pushes it to this repository's GitHub Packages NuGet feed whenever a `v*.*.*` tag is pushed, or on demand via `workflow_dispatch` with an explicit version (used to backfill a package for a version whose tag was already pushed before this workflow existed). Consumers need a GitHub personal access token with `read:packages` scope to `nuget install` from a private feed; see the README's "Option C" for the exact command.

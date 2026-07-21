@@ -6,6 +6,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ---
 
+## [1.3.0] - 2026-07-21
+
+### Added
+
+- Published as a NuGet package to this repo's GitHub Packages feed (`nuget/WorkplaceAssessment.nuspec`, `.github/workflows/nuget-publish.yml`), packed and pushed automatically on every `v*.*.*` tag. See the README's "Option C" for `nuget install` usage; useful for scripted/fleet deployment without cloning the repo.
+
 ## [1.2.1] - 2026-07-21
 
 ### Fixed

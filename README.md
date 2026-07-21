@@ -73,6 +73,14 @@ cd WorkplaceAssessment
 .\Start-Assessment.cmd
 ```
 
+**Option C: NuGet package** for scripted/fleet deployment without cloning the repo, e.g. from a build pipeline or a shared tools drop:
+
+```powershell
+nuget install WorkplaceAssessment -Source "https://nuget.pkg.github.com/9t29zhmwdh-coder/index.json"
+```
+
+Requires a [GitHub personal access token](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#authenticating-to-github-packages) with `read:packages` scope configured as a NuGet source credential; see [nuget-publish.yml](.github/workflows/nuget-publish.yml) for how the package is built. Extracts to `content/scripts/Invoke-WorkplaceAssessment.ps1` and `content/Start-Assessment.cmd` under the package folder.
+
 Or run the script directly without the launcher:
 
 ```powershell
