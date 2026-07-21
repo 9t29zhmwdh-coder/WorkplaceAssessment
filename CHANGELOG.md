@@ -6,6 +6,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ---
 
+## [1.2.1] - 2026-07-21
+
+### Fixed
+
+- v1.2.0's new checks had been ported over from a client-specific fork that had drifted to a different brand along the way (HTML title, report header logo/text, meta tags, `localStorage` key prefixes). Reverted to plain RayStudio branding with no embedded third-party logo, matching the READMEs.
+
 ## [1.2.0] - 2026-07-21
 
 ### Added
