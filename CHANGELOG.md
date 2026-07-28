@@ -6,6 +6,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ---
 
+## [1.3.1] - 2026-07-28
+
+### Changed
+
+- CodeQL moved from GitHub's default setup to an advanced setup with a committed `.github/workflows/codeql.yml`. The default setup skips pull requests that touch no code of a given language, so a dependency pull request changing only a lock file reported `skipping` on the required checks forever and could never be merged. The workflow runs on every pull request regardless of what changed and uses the `security-extended` query suite, which the default setup does not allow choosing. Required checks are unchanged.
+- `.github/dependabot.yml` gains grouping per the portfolio standard; this repository predated the rollout and still had the ungrouped original configuration.
+
 ## [1.3.0] - 2026-07-21
 
 ### Added
