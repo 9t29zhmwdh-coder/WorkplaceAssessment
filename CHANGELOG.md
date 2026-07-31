@@ -6,6 +6,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ---
 
+## [1.3.4] - 2026-07-31
+
+### Changed
+
+- Both READMEs now open with the request that leads here, someone handing you a laptop and asking whether it is fine, rather than with the full list of checks the script runs. A short paragraph says that anyone with Intune or Configuration Manager already gets this continuously, so the script is for the machine in front of you and for machines nobody manages.
+
+---
+
 ## [1.3.3] - 2026-07-29
 
 ### Security
