@@ -6,9 +6,33 @@
 
 [🇬🇧 English Version](README.md)
 
-**Offline Windows-Gerätezustands- und Windows-11-Fähigkeits-Scanner. Ein PowerShell-Skript, keine Abhängigkeiten, keine Netzwerkzugriffe.**
+**Ein Doppelklick auf einem Windows-PC, ein Bericht darüber, was mit ihm nicht stimmt und ob er Windows 11 verträgt.**
 
-WorkplaceAssessment prüft Neustartstatus, Laufzeit, Speicherplatz, Akkuzustand, lokale Administratorkonten, Fernwartungstools, Autostart-Einträge, Windows-11-Bereitschaft (Secure Boot, TPM 2.0, CPU, RAM/Speicher, Aktualität des Feature-Updates) sowie eine Sicherheits-Baseline (BitLocker, Defender-Status und -Ausschlüsse, Firewall, Windows-Update-Compliance, RDP-Exposition, Credential Guard/VBS, LAPS) eines Windows-Geräts und erzeugt daraus einen bewerteten, farbcodierten HTML-Report sowie einen maschinenlesbaren JSON-Export. Alles läuft lokal, es wird nie etwas übertragen.
+Jemand reicht dir ein Notebook und fragt, ob das noch in Ordnung ist. Sauber
+beantwortet heisst das: TPM, Secure Boot, BitLocker, Defender-Ausschlüsse,
+lokale Admins, Fernwartungstools, Autostart-Einträge und Update-Stand, also
+zwanzig Minuten Klicken durch Einstellungsseiten, die an vier verschiedenen
+Orten liegen.
+
+WorkplaceAssessment ist ein PowerShell-Skript. `Start-Assessment.cmd`
+doppelklicken, UAC bestätigen, und du bekommst einen HTML-Bericht mit einer
+Bewertung bis 100 und gruppierten Befunden, jeder mit Beleg, Risiko und
+konkreter Empfehlung. Befunde, die aus einer Liste stammen, also
+Fernwartungstools, auffällige Autostart-Einträge und Defender-Ausschlüsse,
+bekommen je eine eigene Zeile, damit eine bekannte Ausnahme mit dokumentierter
+Begründung abgehakt werden kann.
+
+Ein Schalter "Privatgerät / Firmengerät" entscheidet, ob LAPS und Credential
+Guard in die Bewertung einfliessen, denn die ergeben nur auf einem verwalteten
+Gerät einen Sinn.
+
+Keine Abhängigkeiten, keine Installation, keine Netzwerkzugriffe. Es scannt
+einmal, schreibt den Bericht und beendet sich. Neben dem HTML liegt ein
+JSON-Export.
+
+**Nichts für dich, wenn** du Intune oder Configuration Manager hast. Die melden
+das laufend über die ganze Flotte. Das hier ist für das Gerät, das vor dir
+liegt, und für die Geräte, die niemand verwaltet.
 
 [![CI](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions) [![CodeQL](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/security/code-scanning) [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/9t29zhmwdh-coder/WorkplaceAssessment/badge)](https://securityscorecards.dev/viewer/?uri=github.com/9t29zhmwdh-coder/WorkplaceAssessment) [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13682/badge)](https://www.bestpractices.dev/projects/13682)
 

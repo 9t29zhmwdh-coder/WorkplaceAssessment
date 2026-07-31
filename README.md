@@ -6,9 +6,30 @@
 
 [🇩🇪 Deutsche Version](README.de.md)
 
-**Offline Windows device health and Windows-11-readiness scanner. One PowerShell script, zero dependencies, zero network calls.**
+**One double-click on a Windows PC, one report on what is wrong with it and whether it takes Windows 11.**
 
-WorkplaceAssessment checks a Windows machine's reboot state, uptime, storage, battery health, local admin accounts, remote-access tools, autostart entries, Windows 11 readiness (Secure Boot, TPM 2.0, CPU, RAM/storage, feature-update currency), and a security baseline (BitLocker, Defender status and exclusions, Firewall, Windows Update compliance, RDP exposure, Credential Guard/VBS, LAPS), then produces a scored, color-coded HTML report plus a machine-readable JSON export. Everything runs locally; nothing is ever transmitted anywhere.
+Someone hands you a laptop and asks whether it is fine. Answering properly
+means TPM, Secure Boot, BitLocker, Defender exclusions, local admins,
+remote-access tools, autostart entries and update state, which is twenty
+minutes of clicking through settings pages that live in four different places.
+
+WorkplaceAssessment is one PowerShell script. Double-click
+`Start-Assessment.cmd`, confirm the UAC prompt, and get an HTML report scored
+out of 100 with the findings grouped, each one showing its evidence, the risk
+and what to do about it. Findings that come from a list, remote-access tools,
+suspicious autostart entries, Defender exclusions, get one row each, so a
+known exception can be ticked off with a documented reason.
+
+A "private device / company device" toggle decides whether LAPS and Credential
+Guard count toward the score, since those only mean something on a managed
+machine.
+
+No dependencies, no installation, no network calls. It scans once, writes the
+report, and exits. A JSON export sits alongside the HTML.
+
+**Not for you if** you have Intune or Configuration Manager. Those report this
+continuously across the fleet. This is for the machine in front of you, and
+for the machines nobody manages.
 
 [![CI](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions/workflows/ci.yml/badge.svg)](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions) [![CodeQL](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/9t29zhmwdh-coder/WorkplaceAssessment/security/code-scanning) [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/9t29zhmwdh-coder/WorkplaceAssessment/badge)](https://securityscorecards.dev/viewer/?uri=github.com/9t29zhmwdh-coder/WorkplaceAssessment) [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/13682/badge)](https://www.bestpractices.dev/projects/13682)
 
