@@ -26,11 +26,20 @@ jobs:
       - name: Determine version
         id: version
         shell: pwsh
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+          INPUT_VERSION: ${{ inputs.version }}
         run: |
-          if ("${{ github.ref_type }}" -eq "tag") {
-            $version = "${{ github.ref_name }}" -replace '^v', ''
+          if ($env:REF_TYPE -eq "tag") {
+            $version = $env:REF_NAME -replace '^v', ''
           } else {
-            $version = "${{ github.event.inputs.version }}"
+            $version = $env:INPUT_VERSION
+          }
+          # Later steps paste the version into command lines; only a plain
+          # version number may get that far.
+          if ($version -notmatch '^\d+\.\d+\.\d+(-[0-9A-Za-z.]+)?\z') {
+            throw "Invalid version '$version'"
           }
           "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
 

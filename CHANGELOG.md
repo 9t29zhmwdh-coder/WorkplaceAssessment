@@ -6,6 +6,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ---
 
+## [1.3.5] - 2026-09-25
+
+### Security
+
+- The release and NuGet workflows no longer paste the manual `version` input into their PowerShell scripts. It reaches them through an environment variable, and anything but a plain version number (`1.2.3` or `1.2.3-rc.1`) stops the build, because later steps put the version into command lines.
+
+---
+
 ## [1.3.4] - 2026-07-31
 
 ### Changed
