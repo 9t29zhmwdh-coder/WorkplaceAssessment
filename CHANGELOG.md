@@ -6,6 +6,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ---
 
+## [1.3.8] - 2026-10-11
+
+### Fixed
+
+- The OpenSSF Scorecard badge in the README showed a broken image on GitHub. The live badge is fetched through GitHub's image proxy, which gives up after four seconds, and the Scorecard lookup behind it often takes longer. The badge is now a small image stored in `docs/badges/` with the score of the last release, so it always loads.
+
+---
+
 ## [1.3.7] - 2026-09-30
 
 ### Changed
