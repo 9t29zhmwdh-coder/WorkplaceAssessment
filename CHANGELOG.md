@@ -6,6 +6,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), [Semantic Vers
 
 ---
 
+## [1.3.9] - 2026-10-12
+
+### Changed
+
+Dependency and CI updates merged since v1.3.8, each with green checks:
+
+- chore(ci): bump the actions group with 4 updates (#37)
+
+---
+
 ## [1.3.8] - 2026-10-11
 
 ### Fixed
